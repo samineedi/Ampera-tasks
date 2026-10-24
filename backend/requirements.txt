@@ -1,0 +1,7 @@
+langgraph>=0.2
+flask>=3.0
+requests>=2.31
+python-dotenv>=1.0
+apscheduler>=3.10
+# Gemini is the only LLM provider; without GOOGLE_API_KEY a template draft is used
+langchain-google-genai>=2.0
