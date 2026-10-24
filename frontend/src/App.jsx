@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard.jsx';
 import WeeklyDigest from './pages/WeeklyDigest.jsx';
 import Planning from './pages/Planning.jsx';
 import Closure from './pages/Closure.jsx';
+import Login from './pages/Login.jsx';
 import ChatWidget from './ChatWidget.jsx';
 
 const NAV = [
@@ -15,6 +16,20 @@ const NAV = [
 ];
 
 export default function App() {
+  const [auth, setAuth] = useState(null);                // null = checking
+  useEffect(() => {
+    request('/api/session').then(setAuth).catch(() => setAuth({ authenticated: false }));
+    const onExpired = () => setAuth({ authenticated: false });
+    window.addEventListener('auth-required', onExpired);
+    return () => window.removeEventListener('auth-required', onExpired);
+  }, []);
+
+  if (!auth) return <div className="empty">Loading...</div>;
+  if (!auth.authenticated) return <Login onLogin={setAuth} />;
+  return <Shell auth={auth} onLogout={() => post('/api/logout').finally(() => setAuth({ authenticated: false }))} />;
+}
+
+function Shell({ auth, onLogout }) {
   const [toastState, toast] = useToast();
   const [version, setVersion] = useState(0);
   const [meta, setMeta] = useState({ fetched_at: 'not loaded' });
@@ -42,6 +57,7 @@ export default function App() {
           <span className="badge trello">Live Trello</span>
           <span className="muted">Updated {meta.fetched_at}</span>
           <BusyButton label="Refresh" busyLabel="Refreshing..." onClick={refresh} />
+          {auth.auth_enabled && <button onClick={onLogout}>Sign out</button>}
         </div>
       </header>
       <main>

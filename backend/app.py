@@ -21,6 +21,7 @@ load_dotenv()
 from flask import Flask, jsonify, request, send_from_directory
 
 from agent import cache, config
+from auth import check_config, init_auth
 from agent.chat_agent import ChatUnavailable, ask
 from agent.closure import archive_board, assess
 from agent.dashboard import dashboard_view, filter_project, project_names
@@ -39,9 +40,14 @@ DIST = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 _missing = [k for k in REQUIRED if not os.getenv(k)]
 if _missing:
     raise SystemExit(f"Missing required settings in .env: {', '.join(_missing)}")
+check_config()
 
 app = Flask(__name__, static_folder=None)
 app.config["MAX_CONTENT_LENGTH"] = 2 * 1024 * 1024
+if os.getenv("TRUST_PROXY", "false").lower() == "true":      # behind Azure / a reverse proxy: use the real client IP and scheme
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
+init_auth(app)
 _graph = None
 
 

@@ -5,6 +5,7 @@ from pathlib import Path
 
 for k in ("TRELLO_API_KEY", "TRELLO_TOKEN", "TRELLO_BOARD_ID"):
     os.environ.setdefault(k, "test")
+os.environ.setdefault("AUTH_DISABLED", "true")      # auth tests turn the login on themselves
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import pytest

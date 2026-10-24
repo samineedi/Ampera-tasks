@@ -71,3 +71,10 @@ pre.msg{background:#f7f8fa;border:1px solid var(--line);border-radius:6px;paddin
 .chat-starters{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
 .chat-input{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line)}
 .chat-input textarea{flex:1;resize:none;font:inherit;border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+
+/* Login */
+.login-wrap { display: flex; justify-content: center; padding: 12vh 16px 0; }
+.login { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 12px; }
+.login .brand { margin-bottom: 4px; }
+.login input { width: 100%; box-sizing: border-box; }
+.login-error { color: #b42318; margin: 0; }

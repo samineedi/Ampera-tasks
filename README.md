@@ -12,6 +12,7 @@ python backend/app.py       # http://localhost:5000 (run from the project root)
 ```
 Frontend development with hot reload: run `python backend/app.py` and, in another terminal, `cd frontend && npm run dev`
 (http://localhost:5173, `/api` is proxied to Flask). Needs Node 18+.
+Login: the app asks for a username and password. Set `APP_USERNAME`, `APP_PASSWORD_HASH` and `SECRET_KEY` in `.env` (commands are in `.env.example`); the app will not start without them. For local development only, `AUTH_DISABLED=true` turns the login off. When deployed over HTTPS set `COOKIE_SECURE=true`, and `TRUST_PROXY=true` behind a proxy.
 Live Trello data only: the app will not start without the three Trello settings in `.env`.
 
 ## Pages
